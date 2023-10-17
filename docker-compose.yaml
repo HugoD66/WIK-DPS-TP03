@@ -16,9 +16,11 @@ services:
   proxy:
     image: nginx:latest
     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./templates:/etc/nginx/templates
     ports:
       - 8080:80
+    environment:
+      - NGINX_PORT=8080
     depends_on:
       - my_app
     networks:

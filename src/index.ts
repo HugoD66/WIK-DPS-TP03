@@ -1,13 +1,9 @@
 import { createServer, IncomingMessage, ServerResponse } from "http"
 import { hostname} from "os";
-import dotenv from 'dotenv';
-dotenv.config();
-
-const port: string |undefined = process.env.PING_LISTEN_PORT;
 
 const requestListener = function (req: IncomingMessage, res: ServerResponse) {
   try {
-    console.log(`Request received from Host: ${hostname}`);
+    console.log(`Request received from container: ${hostname}`);
     if (req.method === "GET" && req.url === "/ping") {
       res.setHeader("Content-Type", "application/json")
       res.write(JSON.stringify(req.headers))
@@ -25,7 +21,7 @@ const requestListener = function (req: IncomingMessage, res: ServerResponse) {
 
 try {
   const server = createServer(requestListener);
-  server.listen(port ?? 8080);
+  server.listen(process.env.PING_LISTEN_PORT ?? 8080);
   const serverAddressInfo = server.address()
   if (!serverAddressInfo) {
     throw new Error("No server address info")
